@@ -804,7 +804,7 @@
   });
 
   /* Lead form */
-  var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwIQ_SzYIoop-Lop0sqrkHR5IZZRooZkSJsqemvHnr-xyIuchqcf_igLkApHuZPIM_d/exec';
+  var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyTm_l2kWAtWa4XywN2zIbpPgfLaSUlz16xYc-ofqqW5FXYcFrjGBAXemwoXKbgItNW/exec';
   var currentPkg = '';
 
   function openLeadForm(pkg) {
@@ -838,19 +838,13 @@
     var btn = document.getElementById('lead-submit-btn');
     btn.disabled = true;
     btn.textContent = 'Đang xử lý...';
-    fetch(APPS_SCRIPT_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify({ name: name, phone: phone, email: email, pkg: 'Gói ' + p.name, amount: p.price })
-    })
-    .then(function() {
-      closeLead();
-      openModal(currentPkg);
-    })
-    .catch(function() {
-      closeLead();
-      openModal(currentPkg);
+    var params = new URLSearchParams({
+      name: name, phone: phone, email: email,
+      pkg: 'Gói ' + p.name, amount: p.price
     });
+    fetch(APPS_SCRIPT_URL + '?' + params.toString(), { method: 'GET', mode: 'no-cors' })
+    .then(function() { closeLead(); openModal(currentPkg); })
+    .catch(function() { closeLead(); openModal(currentPkg); });
   }
 
   document.getElementById('lead-overlay').addEventListener('click', function(e) {
