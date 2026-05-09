@@ -840,11 +840,14 @@
     btn.textContent = 'Đang xử lý...';
     fetch(APPS_SCRIPT_URL, {
       method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'text/plain' },
       body: JSON.stringify({ name: name, phone: phone, email: email, pkg: 'Gói ' + p.name, amount: p.price })
     })
-    .finally(function() {
+    .then(function() {
+      closeLead();
+      openModal(currentPkg);
+    })
+    .catch(function() {
       closeLead();
       openModal(currentPkg);
     });
